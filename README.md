@@ -5,13 +5,13 @@ A framework inspired by FaaS, based on `koa`.
 ### Installation
 
 ```sh
-$ npm i kless --save
+$ npm i @nswbmw/kless --save
 ```
 
 ### Example
 
 ```js
-const Kless = require('kless')
+const Kless = require('@nswbmw/kless')
 const app = new Kless()
 
 app.register({
@@ -32,7 +32,7 @@ $ curl localhost:3000/User.getUserById?id=123
 **Validator**
 
 ```js
-const Kless = require('kless')
+const Kless = require('@nswbmw/kless')
 const app = new Kless()
 
 app.register({
@@ -63,7 +63,7 @@ More validators usage see [another-json-schema](https://github.com/nswbmw/anothe
 
 ```js
 const bodyParser = require('koa-bodyparser')
-const Kless = require('kless')
+const Kless = require('@nswbmw/kless')
 const app = new Kless()
 
 app.register({
