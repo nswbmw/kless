@@ -50,6 +50,8 @@ app.register({
 app.listen(3000)
 
 /*
+$ curl localhost:3000/User.getUserById
+($.query.id: undefined) ✖ (required: true)
 $ curl localhost:3000/User.getUserById?id=test
 ($.query.id: "test") ✖ (type: Number)
 $ curl localhost:3000/User.getUserById?id=123
