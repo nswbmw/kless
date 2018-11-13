@@ -138,6 +138,13 @@ describe('Kless', function () {
     })
   })
 
+  it('.Types', async function () {
+    const app = new Kless()
+
+    assert.deepStrictEqual(typeof Kless.Types.Number, 'function')
+    assert.deepStrictEqual(typeof app.Types.Number, 'function')
+  })
+
   it('404', async function () {
     const app = new Kless()
 

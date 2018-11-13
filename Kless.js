@@ -42,6 +42,10 @@ module.exports = class Kless extends Koa {
     })
     objectPath.set(this._handlers, obj.name, compose(handlerFnArr))
   }
+
+  get Types () {
+    return AJS.Types
+  }
 }
 
 function validatorMiddleware (schema, path) {
