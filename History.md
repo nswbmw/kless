@@ -1,3 +1,11 @@
+## 1.0.4/2018-12-20
+
+- upgrade deps
+
+## 1.0.3/2018-12-01
+
+- fix: package.json main
+
 ## 1.0.2/2018-11-13
 
 - update deps
