@@ -1,7 +1,7 @@
 {
   "name": "@nswbmw/kless",
   "description": "A framework inspired by FaaS, based on `koa`.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "Kless.js",
   "scripts": {
     "test": "jest"
@@ -44,6 +44,10 @@
     "supertest": "^3.3.0"
   },
   "jest": {
+    "testPathIgnorePatterns": [
+      "__tests__/handlers",
+      "/node_modules/"
+    ],
     "collectCoverage": true,
     "coverageReporters": [
       "json",
