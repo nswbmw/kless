@@ -8,6 +8,10 @@ A framework inspired by FaaS, based on `koa`.
 $ npm i @nswbmw/kless --save
 ```
 
+### Scaffold
+
+see [create-kless-app](https://github.com/nswbmw/create-kless-app).
+
 ### Example
 
 ```js
