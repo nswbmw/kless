@@ -1,3 +1,10 @@
+## 2.0.0/2019-01-16
+
+breaking changes:
+
+- remove: `.register()`
+- add: `.middleware()`, `.route()`, `.controller()`, `.service()`
+
 ## 1.0.5/2018-12-21
 
 - fix: test

@@ -13,26 +13,58 @@ describe('Kless', function () {
       assert.deepStrictEqual(e.code, 'ENOENT')
     }
 
-    app.load(path.join(__dirname, 'handlers'))
+    app.load(path.join(__dirname, 'service'))
+    app.load(path.join(__dirname, 'controller'))
+    app.load(path.join(__dirname, 'route'))
+    assert.deepStrictEqual(typeof app.service.User, 'object')
+    assert.deepStrictEqual(typeof app.service.User.getUserById, 'function')
+    assert.deepStrictEqual(typeof app.controller.User, 'object')
+    assert.deepStrictEqual(typeof app.controller.User.getUserById, 'function')
+    assert.deepStrictEqual(typeof app.service.User, 'object')
+    assert.deepStrictEqual(typeof app.service.User.getUserById, 'function')
 
     const res = await request(app.callback())
-      .get('/User.getUserById?id=123')
+      .get('/User.getUserById?uid=123', {
+        json: true
+      })
       .expect(200)
 
-    assert.deepStrictEqual(res.text, '123')
+    assert.deepStrictEqual(res.body, {
+      id: 123,
+      name: '123'
+    })
   })
 
-  describe('.register()', function () {
-    it('handler is function', async function () {
+  describe('.route()', function () {
+    it('index', async function () {
       const app = new Kless()
-      app.register({
-        name: 'User.getUserById',
-        handler: async (ctx, next) => {
-          ctx.body = ctx.query.id
+      app.route({
+        name: 'index',
+        controller: async (ctx, next) => {
+          ctx.body = 'This is index page'
         }
       })
       let res = await request(app.callback())
-        .get('/User.getUserById?id=123')
+        .get('/')
+        .expect(200)
+      assert.deepStrictEqual(res.text, 'This is index page')
+
+      let res2 = await request(app.callback())
+        .get('/index')
+        .expect(200)
+      assert.deepStrictEqual(res2.text, 'This is index page')
+    })
+
+    it('route is function', async function () {
+      const app = new Kless()
+      app.route({
+        name: 'User.getUserById',
+        controller: async (ctx, next) => {
+          ctx.body = ctx.query.uid
+        }
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
         .expect(200)
       assert.deepStrictEqual(res.text, '123')
 
@@ -43,43 +75,45 @@ describe('Kless', function () {
       assert.deepStrictEqual(res.text, 'Not Found')
     })
 
-    it('handler is array of function', async function () {
+    it('route is an array of functions', async function () {
       const app = new Kless()
-      app.register({
+      app.route({
         name: 'User.getUserById',
-        handler: [
+        controller: [
           async (ctx, next) => {
-            ctx.body = ctx.query.id
+            ctx.body = ctx.query.uid
             return next()
           },
           async (ctx, next) => {
-            ctx.body += ctx.query.id
+            ctx.body += ctx.query.uid
           }
         ]
       })
       const res = await request(app.callback())
-        .get('/User.getUserById?id=123')
+        .get('/User.getUserById?uid=123')
         .expect(200)
 
       assert.deepStrictEqual(res.text, '123123')
     })
 
-    it('validate', async function () {
+    it('route with validator middleware', async function () {
       const app = new Kless()
       const bodyparser = require('koa-bodyparser')
 
       app.use(bodyparser())
-      app.register({
+      app.route({
         name: 'User.createUser',
-        validate: {
-          body: {
-            user: { type: 'string', required: true },
-            age: { type: 'number' }
+        controller: [
+          app.middleware.validator({
+            body: {
+              user: { type: 'string', required: true },
+              age: { type: 'number' }
+            }
+          }),
+          async (ctx, next) => {
+            ctx.body = ctx.request.body
           }
-        },
-        handler: async (ctx, next) => {
-          ctx.body = ctx.request.body
-        }
+        ]
       })
 
       let res = await request(app.callback())
@@ -112,16 +146,18 @@ describe('Kless', function () {
       }
 
       app.use(bodyparser())
-      app.register({
+      app.route({
         name: 'User.createUser',
-        validate: {
-          body: {
-            email: { type: email }
+        controller: [
+          app.middleware.validator({
+            body: {
+              email: { type: email }
+            }
+          }),
+          async (ctx, next) => {
+            ctx.body = ctx.request.body
           }
-        },
-        handler: async (ctx, next) => {
-          ctx.body = ctx.request.body
-        }
+        ]
       })
 
       let res = await request(app.callback())
@@ -135,6 +171,128 @@ describe('Kless', function () {
         .send({ email: '123@aa.bb' })
         .expect(200)
       assert.deepStrictEqual(res.body, { email: '123@aa.bb' })
+    })
+  })
+
+  describe('.controller()', function () {
+    it('controller is function', async function () {
+      const app = new Kless()
+
+      app.controller('User.getUserById', (ctx) => {
+        ctx.body = ctx.query.uid
+      })
+      app.route({
+        name: 'User.getUserById',
+        controller: app.controller.User.getUserById
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
+        .expect(200)
+      assert.deepStrictEqual(res.text, '123')
+    })
+
+    it('controller is object', async function () {
+      const app = new Kless()
+
+      app.controller('User', {
+        getUserById (ctx) {
+          ctx.body = ctx.query.uid
+        }
+      })
+      app.route({
+        name: 'User.getUserById',
+        controller: app.controller.User.getUserById
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
+        .expect(200)
+      assert.deepStrictEqual(res.text, '123')
+    })
+  })
+
+  describe('.service()', function () {
+    it('service is function', async function () {
+      const app = new Kless()
+
+      app.service('User.getUserById', async (uid) => {
+        return uid
+      })
+      app.route({
+        name: 'User.getUserById',
+        controller: async (ctx, next) => {
+          ctx.body = await app.service.User.getUserById(ctx.query.uid)
+        }
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
+        .expect(200)
+      assert.deepStrictEqual(res.text, '123')
+    })
+
+    it('service is object', async function () {
+      const app = new Kless()
+
+      app.service('User', {
+        async getUserById (uid) {
+          return uid
+        }
+      })
+      app.route({
+        name: 'User.getUserById',
+        controller: async (ctx, next) => {
+          ctx.body = await app.service.User.getUserById(ctx.query.uid)
+        }
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
+        .expect(200)
+      assert.deepStrictEqual(res.text, '123')
+    })
+  })
+
+  describe('.middleware()', function () {
+    it('middleware is function', async function () {
+      const app = new Kless()
+
+      app.middleware('checkLogin', async (ctx) => {
+        ctx.throw(401, 'Please login')
+      })
+      app.route({
+        name: 'User.getUserById',
+        controller: [
+          app.middleware.checkLogin,
+          async (ctx, next) => {
+            ctx.body = ctx.query.uid
+          }
+        ]
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
+        .expect(401)
+      assert.deepStrictEqual(res.text, 'Please login')
+    })
+
+    it('middleware is object', async function () {
+      const app = new Kless()
+
+      app.middleware('Auth', {
+        async checkLogin (ctx) {
+          ctx.throw(401, 'Please login')
+        }
+      })
+      app.route({
+        name: 'User.getUserById',
+        controller: [
+          app.middleware.Auth.checkLogin,
+          async (ctx, next) => {
+            ctx.body = ctx.query.uid
+          }
+        ]
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
+        .expect(401)
+      assert.deepStrictEqual(res.text, 'Please login')
     })
   })
 

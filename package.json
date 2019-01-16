@@ -1,7 +1,7 @@
 {
   "name": "@nswbmw/kless",
   "description": "A framework inspired by FaaS, based on `koa`.",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "main": "Kless.js",
   "scripts": {
     "test": "jest"
@@ -18,8 +18,8 @@
     "serverless"
   ],
   "dependencies": {
-    "another-json-schema": "^3.8.0",
-    "koa": "2.6.2",
+    "another-json-schema": "^3.8.1",
+    "koa": "https://github.com/nswbmw/koa.git",
     "koa-compose": "4.1.0",
     "object-path": "0.11.4",
     "require-directory": "2.1.1"
@@ -33,10 +33,10 @@
     "node": ">= 8"
   },
   "devDependencies": {
-    "eslint": "5.10.0",
+    "eslint": "5.12.0",
     "eslint-config-standard": "12.0.0",
     "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-node": "8.0.0",
+    "eslint-plugin-node": "8.0.1",
     "eslint-plugin-promise": "4.0.1",
     "eslint-plugin-standard": "4.0.0",
     "jest": "23.6.0",
@@ -45,7 +45,9 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "__tests__/handlers",
+      "__tests__/controller",
+      "__tests__/service",
+      "__tests__/route",
       "/node_modules/"
     ],
     "collectCoverage": true,
