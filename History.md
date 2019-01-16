@@ -1,3 +1,7 @@
+## 2.0.1/2019-01-16
+
+- add `.schema` when validatorMiddleware throw error
+
 ## 2.0.0/2019-01-16
 
 breaking changes:

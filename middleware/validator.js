@@ -7,6 +7,8 @@ module.exports = function (schema) {
     if (result.valid) {
       return next()
     }
-    ctx.throw(result.error.status || result.error.statusCode || 400, result.error.originError || result.error)
+    const error = result.error.originError || result.error
+    error.schema = ctx.path.slice(1)
+    ctx.throw(result.error.status || result.error.statusCode || 400, error)
   }
 }
