@@ -1,3 +1,7 @@
+## 2.0.2/2020-09-24
+
+- update deps
+
 ## 2.0.1/2019-01-16
 
 - add `.schema` when validatorMiddleware throw error

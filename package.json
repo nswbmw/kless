@@ -1,7 +1,7 @@
 {
   "name": "@nswbmw/kless",
   "description": "A framework inspired by FaaS, based on `koa`.",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "main": "Kless.js",
   "scripts": {
     "test": "jest"
@@ -18,7 +18,7 @@
     "serverless"
   ],
   "dependencies": {
-    "another-json-schema": "^3.8.1",
+    "another-json-schema": "^3.8.3",
     "koa": "https://github.com/nswbmw/koa.git",
     "koa-compose": "4.1.0",
     "object-path": "0.11.4",
@@ -33,15 +33,15 @@
     "node": ">= 8"
   },
   "devDependencies": {
-    "eslint": "5.12.0",
-    "eslint-config-standard": "12.0.0",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-node": "8.0.1",
-    "eslint-plugin-promise": "4.0.1",
-    "eslint-plugin-standard": "4.0.0",
-    "jest": "23.6.0",
-    "koa-bodyparser": "^4.2.1",
-    "supertest": "^3.3.0"
+    "eslint": "7.9.0",
+    "eslint-config-standard": "14.1.1",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1",
+    "jest": "26.4.2",
+    "koa-bodyparser": "^4.3.0",
+    "supertest": "^4.0.2"
   },
   "jest": {
     "testPathIgnorePatterns": [
