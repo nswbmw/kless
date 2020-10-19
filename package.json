@@ -21,7 +21,7 @@
     "another-json-schema": "^3.8.3",
     "koa": "https://github.com/nswbmw/koa.git",
     "koa-compose": "4.1.0",
-    "object-path": "0.11.4",
+    "object-path": "0.11.5",
     "require-directory": "2.1.1"
   },
   "repository": {
