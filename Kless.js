@@ -39,13 +39,13 @@ module.exports = class Kless extends Koa {
     const controllerFnArr = Array.isArray(obj.controller) ? obj.controller : [obj.controller]
 
     this.use((ctx, next) => {
-      const fn = objectPath.get(this.route, ctx.path.slice(1) || 'index')
+      const fn = this.route[ctx.path.slice(1) || 'index']
       if (fn && typeof fn === 'function') {
         return fn(ctx, next)
       }
       return next()
     })
-    objectPath.set(this.route, obj.name, compose(controllerFnArr))
+    this.route[obj.name] = compose(controllerFnArr)
   }
 
   controller (name, obj) {
