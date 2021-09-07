@@ -1,7 +1,7 @@
 {
   "name": "@nswbmw/kless",
   "description": "A framework inspired by FaaS, based on `koa`.",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "Kless.js",
   "scripts": {
     "test": "jest"

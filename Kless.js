@@ -1,7 +1,7 @@
 const path = require('path')
 const assert = require('assert')
 
-const Koa = require('koa')
+const Koa = require('@nswbmw/koa')
 const compose = require('koa-compose')
 const objectPath = require('object-path')
 const AJS = require('another-json-schema')
