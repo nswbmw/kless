@@ -1,3 +1,15 @@
+## 2.1.3/2021-09-07
+
+- update deps
+
+## 2.1.1 + 2.1.2/2021-09-07
+
+- use `@nswbmw/koa` instead of git
+
+## 2.1.0/2021-04-13
+
+- fix route
+
 ## 2.0.2/2020-09-24
 
 - update deps

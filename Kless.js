@@ -61,7 +61,7 @@ module.exports = class Kless extends Koa {
 
     if (typeof obj === 'object') {
       // bind
-      for (let key in obj) {
+      for (const key in obj) {
         /* istanbul ignore else */
         if (typeof obj[key] === 'function') {
           obj[key] = obj[key].bind(obj)
