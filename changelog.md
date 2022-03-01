@@ -1,3 +1,7 @@
+## 2.2.0/2022-03-01
+
+- remove service function `bind`
+
 ## 2.1.3/2021-09-07
 
 - update deps

@@ -59,16 +59,6 @@ module.exports = class Kless extends Koa {
     assert(name && typeof name === 'string', 'service `name` required')
     assert(obj && (['object', 'function'].includes(typeof obj)), 'service second parameter should be a function or an object')
 
-    if (typeof obj === 'object') {
-      // bind
-      for (const key in obj) {
-        /* istanbul ignore else */
-        if (typeof obj[key] === 'function') {
-          obj[key] = obj[key].bind(obj)
-        }
-      }
-    }
-
     objectPath.set(this.service, name, obj)
   }
 
