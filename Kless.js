@@ -16,11 +16,21 @@ module.exports = class Kless extends Koa {
     this.middleware('validator', validatorMiddleware)
   }
 
-  load (dir) {
-    if (path.isAbsolute(dir)) {
-      requireDirectory(module, dir)
+  load (fileOrDirPath) {
+    if (fileOrDirPath.match(/\.js$/)) {
+      // file
+      if (path.isAbsolute(fileOrDirPath)) {
+        require(fileOrDirPath)
+      } else {
+        require(path.join(path.dirname(module.parent.filename), fileOrDirPath))
+      }
     } else {
-      requireDirectory(module, path.join(path.dirname(module.parent.filename), dir))
+      // dir
+      if (path.isAbsolute(fileOrDirPath)) {
+        requireDirectory(module, fileOrDirPath)
+      } else {
+        requireDirectory(module, path.join(path.dirname(module.parent.filename), fileOrDirPath))
+      }
     }
   }
 

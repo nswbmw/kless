@@ -1,3 +1,8 @@
+## 2.3.0/2022-10-31
+
+- app.load() support js file
+- update deps
+
 ## 2.2.0/2022-03-01
 
 - remove service function `bind`

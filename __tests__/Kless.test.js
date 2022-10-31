@@ -14,14 +14,17 @@ describe('Kless', function () {
     }
 
     app.load(path.join(__dirname, 'service'))
+    app.load(path.join(__dirname, 'service2/User2.js'))
     app.load(path.join(__dirname, 'controller'))
     app.load(path.join(__dirname, 'route'))
+
     assert.deepStrictEqual(typeof app.service.User, 'object')
     assert.deepStrictEqual(typeof app.service.User.getUserById, 'function')
+    assert.deepStrictEqual(typeof app.service.User2.getUserById, 'function')
+    assert.deepStrictEqual(app.service.User3, undefined)
     assert.deepStrictEqual(typeof app.controller.User, 'object')
     assert.deepStrictEqual(typeof app.controller.User.getUserById, 'function')
-    assert.deepStrictEqual(typeof app.service.User, 'object')
-    assert.deepStrictEqual(typeof app.service.User.getUserById, 'function')
+    assert.deepStrictEqual(typeof app.route['User.getUserById'], 'function')
 
     const res = await request(app.callback())
       .get('/User.getUserById?uid=123', {
