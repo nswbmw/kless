@@ -1,7 +1,7 @@
 {
   "name": "@nswbmw/kless",
   "description": "A framework inspired by FaaS, based on `koa`.",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "main": "Kless.js",
   "scripts": {
     "test": "jest"
@@ -33,7 +33,7 @@
     "node": ">= 8"
   },
   "devDependencies": {
-    "eslint": "8.38.0",
+    "eslint": "8.40.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-node": "11.1.0",

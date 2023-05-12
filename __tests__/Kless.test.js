@@ -15,13 +15,15 @@ describe('Kless', function () {
 
     app.load(path.join(__dirname, 'service'))
     app.load(path.join(__dirname, 'service2/User2.js'))
+    app.load('service2/User3.js')
     app.load(path.join(__dirname, 'controller'))
     app.load(path.join(__dirname, 'route'))
 
     assert.deepStrictEqual(typeof app.service.User, 'object')
     assert.deepStrictEqual(typeof app.service.User.getUserById, 'function')
     assert.deepStrictEqual(typeof app.service.User2.getUserById, 'function')
-    assert.deepStrictEqual(app.service.User3, undefined)
+    assert.deepStrictEqual(typeof app.service.User3.getUserById, 'function')
+    assert.deepStrictEqual(app.service.User4, undefined)
     assert.deepStrictEqual(typeof app.controller.User, 'object')
     assert.deepStrictEqual(typeof app.controller.User.getUserById, 'function')
     assert.deepStrictEqual(typeof app.route['User.getUserById'], 'function')
@@ -52,10 +54,30 @@ describe('Kless', function () {
         .expect(200)
       assert.deepStrictEqual(res.text, 'This is index page')
 
-      let res2 = await request(app.callback())
+      res = await request(app.callback())
         .get('/index')
         .expect(200)
-      assert.deepStrictEqual(res2.text, 'This is index page')
+      assert.deepStrictEqual(res.text, 'This is index page')
+    })
+
+    it('routeName', async function () {
+      const app = new Kless()
+      app.route({
+        name: 'User.getUserById',
+        controller: async (ctx, next) => {
+          ctx.body = ctx.routeName
+        }
+      })
+      let res = await request(app.callback())
+        .get('/User.getUserById?uid=123')
+        .expect(200)
+      assert.deepStrictEqual(res.text, 'User.getUserById')
+
+      // 404
+      res = await request(app.callback())
+        .get('/User.getUserById2')
+        .expect(404)
+      assert.deepStrictEqual(res.text, 'Not Found')
     })
 
     it('route is function', async function () {
@@ -66,6 +88,7 @@ describe('Kless', function () {
           ctx.body = ctx.query.uid
         }
       })
+
       let res = await request(app.callback())
         .get('/User.getUserById?uid=123')
         .expect(200)

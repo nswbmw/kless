@@ -1,3 +1,8 @@
+## 2.3.1/2023-05-12
+
+- add: ctx.routeName
+- update deps
+
 ## 2.3.0/2022-10-31
 
 - app.load() support js file
