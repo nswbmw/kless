@@ -47,16 +47,19 @@ module.exports = class Kless extends Koa {
     assert(typeof obj.controller === 'function' || (Array.isArray(obj.controller) && obj.controller.every(ctr => typeof ctr === 'function')), 'route `controller` should be a function or an array of functions')
 
     const controllerFnArr = Array.isArray(obj.controller) ? obj.controller : [obj.controller]
+    controllerFnArr.unshift(async function (ctx, next) {
+      ctx.routeName = obj.name
+      return next()
+    })
+    this.route[obj.name] = compose(controllerFnArr)
 
     this.use((ctx, next) => {
-      ctx.routeName = obj.name
       const fn = this.route[ctx.path.slice(1) || 'index']
       if (fn && typeof fn === 'function') {
         return fn(ctx, next)
       }
       return next()
     })
-    this.route[obj.name] = compose(controllerFnArr)
   }
 
   controller (name, obj) {

@@ -1,3 +1,7 @@
+## 2.3.2/2023-05-13
+
+- fix: ctx.routeName
+
 ## 2.3.1/2023-05-12
 
 - add: ctx.routeName
