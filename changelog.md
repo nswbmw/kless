@@ -1,3 +1,7 @@
+## 2.3.3/2024-11-11
+
+- update deps
+
 ## 2.3.2/2023-05-13
 
 - fix: ctx.routeName
